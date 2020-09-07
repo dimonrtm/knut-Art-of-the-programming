@@ -56,6 +56,10 @@ public:
     NodeCard* getNext(){
         return this->next;
         }
+        
+    char* getTitle(){
+        return this->title;
+        }
     ~NodeCard(){
         delete [] title;
         }
@@ -66,19 +70,19 @@ private:
    NodeCard *top;
 public:
    CardDeck(){
-       top = nullptr;
+       this->top = nullptr;
        }
        
    void addCard(short suite, short rank){
        NodeCard *newCard = new NodeCard(suite, rank);
-       newCard->setNext(top);
-       top = newCard;
-       top->setTag(0);
+       newCard->setNext(this->top);
+       this->top = newCard;
+       this->top->setTag(0);
        }
        
     int getSize(){
         int count = 0;
-        NodeCard *current = top;
+        NodeCard *current = this->top;
         while(current != nullptr){
             current = current->getNext();
             count++;
@@ -86,8 +90,16 @@ public:
         return count;
         }
         
+    NodeCard* getTopCard(){
+        NodeCard *topCard = this->top;
+        if(this->top != nullptr){
+            this->top = this->top->getNext();
+            }
+        return topCard;
+        }
+        
     ~CardDeck(){
-        NodeCard *current = top;
+        NodeCard *current = this->top;
         while(current != nullptr){
             NodeCard *deletedCard = current;
             current = current->getNext();
@@ -115,6 +127,12 @@ public:
             delete node;
             }
         }
+        
+    int printDeckSize(CardDeck *cardDeck){
+        int sizeCardDeck = cardDeck->getSize();
+        std::cout << "number cards in the deck " << sizeCardDeck << "." << std::endl;
+        return sizeCardDeck;
+        }
 
 int main(int argc, char **argv)
 {
@@ -128,8 +146,18 @@ int main(int argc, char **argv)
     cardDeck->addCard(1, 10);
     cardDeck->addCard(4, 3);
     cardDeck->addCard(2, 2);
-    int sizeCardDeck = cardDeck->getSize();
-    std::cout << "number cards in the deck " << sizeCardDeck << "." << std::endl;
+    int size = printDeckSize(cardDeck);
+    for(int i = 1; i <= size + 1; i++){
+        NodeCard *topCard = cardDeck->getTopCard();
+        if(topCard == nullptr){
+            std::cout << "top card is null" << std::endl;
+            }
+        else{
+            std::cout << topCard->getTitle() << std::endl;
+            printDeckSize(cardDeck);
+            delete topCard;
+            }
+        }
     delete cardDeck;
 	return 0;
 }
