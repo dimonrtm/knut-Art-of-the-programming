@@ -60,6 +60,11 @@ public:
     char* getTitle(){
         return this->title;
         }
+        
+    int getTag(){
+        return this->tag;
+        }
+    
     ~NodeCard(){
         delete [] title;
         }
@@ -135,6 +140,23 @@ public:
             }
         }
         
+    void printCards(){
+            NodeCard *currentCard = this->top;
+            while(currentCard != nullptr){
+                char *title =currentCard->getTitle();
+                if(currentCard->getTag() == 1){
+                    char *resultTitle = new char[7];
+                    sprintf(resultTitle, "(%s)", title);
+                    std::cout << resultTitle << std::endl;
+                    delete [] resultTitle;
+                    }
+                else{
+                    std::cout << title << std::endl;
+                    }
+                currentCard = currentCard->getNext();
+                }
+        }
+        
     ~CardDeck(){
         NodeCard *current = this->top;
         while(current != nullptr){
@@ -180,12 +202,14 @@ int main(int argc, char **argv)
     testSetTagInvalidValue(-1);
     testSetTagInvalidValue(2);
     CardDeck *cardDeck = new CardDeck;
+    cardDeck->printCards();
     cardDeck->addCardToTop(1, 10);
     cardDeck->addCardToTail(1, 6);
     cardDeck->addCardToTop(4, 3);
     cardDeck->addCardToTail(4, 4);
     cardDeck->addCardToTop(2, 2);
     cardDeck->addCardToTail(2, 3);
+    cardDeck->printCards();
     int size = printDeckSize(cardDeck);
     for(int i = 1; i <= size + 1; i++){
         NodeCard *topCard = cardDeck->getTopCard();
@@ -199,12 +223,14 @@ int main(int argc, char **argv)
             }
         }
     CardDeck *tailCardDeck = new CardDeck;
+    tailCardDeck->printCards();
     tailCardDeck->addCardToTail(1, 10);
     tailCardDeck->addCardToTop(1, 6);
     tailCardDeck->addCardToTail(4, 3);
     tailCardDeck->addCardToTop(4, 4);
     tailCardDeck->addCardToTail(2, 2);
     tailCardDeck->addCardToTop(2, 3);
+    tailCardDeck->printCards();
     size = printDeckSize(tailCardDeck);
      for(int i = 1; i <= size + 1; i++){
         NodeCard *tailCard = tailCardDeck->getTailCard();
