@@ -116,6 +116,25 @@ public:
         return topCard;
         }
         
+    NodeCard* getTailCard(){
+        if(this->top == nullptr){
+            return nullptr;
+            }
+        NodeCard *currentCard = this->top;
+        if(currentCard->getNext() == nullptr){
+            this->top = nullptr;
+            return currentCard;
+            }
+        else{
+            while(currentCard->getNext()->getNext() != nullptr){
+                currentCard = currentCard->getNext();
+                }
+                NodeCard *result = currentCard->getNext();
+                currentCard->setNext(nullptr);
+                return result;
+            }
+        }
+        
     ~CardDeck(){
         NodeCard *current = this->top;
         while(current != nullptr){
@@ -188,16 +207,17 @@ int main(int argc, char **argv)
     tailCardDeck->addCardToTop(2, 3);
     size = printDeckSize(tailCardDeck);
      for(int i = 1; i <= size + 1; i++){
-        NodeCard *topCard = tailCardDeck->getTopCard();
-        if(topCard == nullptr){
-            std::cout << "top card is null" << std::endl;
+        NodeCard *tailCard = tailCardDeck->getTailCard();
+        if(tailCard == nullptr){
+            std::cout << "tail card is null" << std::endl;
             }
         else{
-            std::cout << topCard->getTitle() << std::endl;
+            std::cout << tailCard->getTitle() << std::endl;
             printDeckSize(tailCardDeck);
-            delete topCard;
+            delete tailCard;
             }
         }
     delete cardDeck;
+    delete tailCardDeck;
 	return 0;
 }
